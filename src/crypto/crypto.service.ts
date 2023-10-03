@@ -4,9 +4,9 @@ import { CoinDataDto } from './dto/get-coin-data.dto';
 
 @Injectable()
 export class CryptoService {
-  async getPrice(coinSymbol: string): Promise<CoinDataDto> {
+  async getPrice(coinSymbol: string = 'BTC'): Promise<CoinDataDto> {
     try {
-      const coinData = await axios({
+      const { data } = await axios({
         url: `https://rest.coinapi.io/v1/exchangerate/${coinSymbol}/USD`,
         maxBodyLength: Infinity,
         headers: {
@@ -14,7 +14,7 @@ export class CryptoService {
         },
         method: 'get',
       });
-      return coinData.data;
+      return data;
     } catch (error) {
       throw new Error(error);
     }
