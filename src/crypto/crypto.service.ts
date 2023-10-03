@@ -1,9 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { CoinDataDto } from './dto/get-coin-data.dto';
+import { Crypto } from './crypto.model';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { CryptoModule } from './crypto.module';
 
 @Injectable()
 export class CryptoService {
+  // private cryptos: Crypto[] = [];
+  constructor(
+    @InjectModel('Crypto') private readonly cryptoModel1: Model<CryptoModule>, //   @InjectModel('db2') private readonly cryptoModel2: Model<Crypto>,
+  ) {}
+
   async getPrice(coinSymbol: string = 'BTC'): Promise<CoinDataDto> {
     try {
       const { data } = await axios({
@@ -14,7 +23,9 @@ export class CryptoService {
         },
         method: 'get',
       });
-      return data;
+      const newPrice = new this.cryptoModel1({ ...data });
+      await newPrice.save();
+      return { ...data };
     } catch (error) {
       throw new Error(error);
     }
