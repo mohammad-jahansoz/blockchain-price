@@ -8,12 +8,11 @@ import { CryptoModule } from './crypto.module';
 
 @Injectable()
 export class CryptoService {
-  // private cryptos: Crypto[] = [];
   constructor(
     @InjectModel('CryptoModel', 'db1')
     private readonly cryptoModelDB1: Model<CryptoModule>,
     @InjectModel('CryptoModel', 'db2')
-    private readonly cryptoModeDB2: Model<CryptoModule>,
+    private readonly cryptoModelDB2: Model<CryptoModule>,
   ) {}
 
   async getPrice(coinSymbol: string = 'BTC'): Promise<CoinDataDto> {
@@ -26,11 +25,21 @@ export class CryptoService {
         },
         method: 'get',
       });
-      const newPrice = new this.cryptoModelDB1({ ...data });
-      await newPrice.save();
       return { ...data };
     } catch (error) {
       throw new Error(error);
     }
+  }
+
+  async saveData(coinData: CoinDataDto): Promise<CoinDataDto> {
+    const date = new Date(coinData.time);
+    let newPrice;
+    if (date.getHours() < 12) {
+      newPrice = new this.cryptoModelDB2({ ...coinData });
+    } else {
+      newPrice = new this.cryptoModelDB1({ ...coinData });
+    }
+    await newPrice.save();
+    return newPrice;
   }
 }

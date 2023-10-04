@@ -8,7 +8,6 @@ export const CryptoSchema = new mongoose.Schema({
 });
 
 export interface Crypto extends mongoose.Document {
-  id: string;
   time: Date;
   asset_id_base: String;
   asset_id_quote: String;

@@ -9,7 +9,9 @@ export class CryptoController {
 
   @Cron('*/5 * * * * *')
   async updateBtcPrice(): Promise<void> {
-    console.log(await this.cryptoService.getPrice());
+    const coinData = await this.cryptoService.getPrice();
+    const result = await this.cryptoService.saveData(coinData);
+    console.log(result);
   }
 
   @Get()
