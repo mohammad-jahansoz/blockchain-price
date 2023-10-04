@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-export const CryptoSchema1 = new mongoose.Schema({
+export const CryptoSchema = new mongoose.Schema({
   time: { type: Date, required: true },
   asset_id_base: { type: String, required: true },
   asset_id_quote: { type: String, required: true },
