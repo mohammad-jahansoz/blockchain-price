@@ -10,11 +10,11 @@ import { MongooseModule } from '@nestjs/mongoose';
     CryptoModule,
     ScheduleModule.forRoot(),
     MongooseModule.forRoot('mongodb://127.0.0.1:27017/db1', {
-      // connectionName: 'db1',
+      connectionName: 'db1',
     }),
-    // MongooseModule.forRoot('mongodb://127.0.0.1:27017/db2', {
-    //   connectionName: 'db2',
-    // }),
+    MongooseModule.forRoot('mongodb://127.0.0.1:27017/db2', {
+      connectionName: 'db2',
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

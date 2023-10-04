@@ -3,18 +3,19 @@ import { CryptoController } from './crypto.controller';
 import { CryptoService } from './crypto.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CryptoSchema } from './crypto.model';
+import { CryptoSchema1 } from './crypto.model.1';
+import { CryptoSchema2 } from './crypto.model.2';
 
 @Module({
   imports: [
     MongooseModule.forFeature(
-      [{ name: 'Crypto', schema: CryptoSchema, collection: 'btc' }],
-      // 'db1',
+      [{ name: 'CryptoModel1', schema: CryptoSchema1, collection: 'btc' }],
+      'db1',
     ),
-    //   MongooseModule.forFeature(
-    //     [{ name: 'db2', schema: CryptoSchema, collection: 'btc' }],
-    //     'db2',
-    //   ),
+    MongooseModule.forFeature(
+      [{ name: 'CryptoModel2', schema: CryptoSchema2, collection: 'btc' }],
+      'db2',
+    ),
   ],
   controllers: [CryptoController],
   providers: [CryptoService],
