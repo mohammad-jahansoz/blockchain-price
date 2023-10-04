@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-import { CoinDataDto } from './dto/get-coin-data.dto';
+import { CoinType } from './interfaces/coin.interface';
 import { Crypto } from './crypto.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CryptoModule } from './crypto.module';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class CryptoService {
@@ -15,7 +16,7 @@ export class CryptoService {
     private readonly cryptoModelDB2: Model<CryptoModule>,
   ) {}
 
-  async getPrice(coinSymbol: string = 'BTC'): Promise<CoinDataDto> {
+  async getPrice(coinSymbol: string = 'BTC'): Promise<CoinType> {
     try {
       const { data } = await axios({
         url: `https://rest.coinapi.io/v1/exchangerate/${coinSymbol}/USD`,
@@ -31,7 +32,7 @@ export class CryptoService {
     }
   }
 
-  async saveData(coinData: CoinDataDto): Promise<CoinDataDto> {
+  async saveData(coinData: CoinType): Promise<CoinType> {
     const date = new Date(coinData.time);
     let newPrice;
     if (date.getHours() < 12) {
@@ -41,5 +42,12 @@ export class CryptoService {
     }
     await newPrice.save();
     return newPrice;
+  }
+
+  @Cron('*/5 * * * * *')
+  async saveBtcPrice(): Promise<void> {
+    const coinData = await this.getPrice();
+    const result = await this.saveData(coinData);
+    console.log(result);
   }
 }

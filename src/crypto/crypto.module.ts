@@ -4,8 +4,6 @@ import { CryptoService } from './crypto.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CryptoSchema, Crypto } from './crypto.schema';
-// import { CryptoSchema1 } from './crypto.model.1';
-// import { CryptoSchema2 } from './crypto.model.2';
 
 @Module({
   imports: [
