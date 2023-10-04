@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { CoinDataDto } from './dto/get-coin-data.dto';
-import { Crypto } from './crypto.model';
+import { Crypto } from './crypto.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CryptoModule } from './crypto.module';
