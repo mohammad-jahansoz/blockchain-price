@@ -4,6 +4,7 @@ import { CryptoService } from './crypto.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CryptoSchema, Crypto } from './crypto.schema';
+import { CryptoResolver } from './crypto.resolver';
 
 @Module({
   imports: [
@@ -17,6 +18,6 @@ import { CryptoSchema, Crypto } from './crypto.schema';
     ),
   ],
   controllers: [CryptoController],
-  providers: [CryptoService],
+  providers: [CryptoService, CryptoResolver],
 })
 export class CryptoModule {}

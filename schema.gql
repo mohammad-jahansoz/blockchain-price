@@ -1,0 +1,15 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""crypto """
+type Crypto {
+  time: String
+  asset_id_base: String
+  asset_id_quote: String
+  rate: Float
+}
+
+type Query {
+  recipe: Crypto!
+}
