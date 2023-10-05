@@ -12,8 +12,8 @@ export class CryptoController {
   //   return this.cryptoService.getPrice();
   // }
 
-  @Get()
-  async cronjob() {
-    this.cryptoService.createCronJob(2);
-  }
+  // @Get()
+  // async cronjob() {
+  //   this.cryptoService.createCronJob(2);
+  // }
 }

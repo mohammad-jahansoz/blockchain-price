@@ -14,3 +14,7 @@ type Query {
   crypto: Crypto!
   lastPrice(dbNumber: Float!): Crypto!
 }
+
+type Mutation {
+  createCronJob(second: Float!): Boolean!
+}

@@ -6,3 +6,7 @@ time,
 rate
 }
 }
+
+mutation AddMutation($second :Float!){
+  createCronJob(second:$second)
+}

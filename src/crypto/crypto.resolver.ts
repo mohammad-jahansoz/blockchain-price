@@ -1,5 +1,12 @@
 import { NotFoundException } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
+import {
+  Args,
+  Int,
+  Mutation,
+  Query,
+  Resolver,
+  Subscription,
+} from '@nestjs/graphql';
 // import { NewRecipeInput } from './dto/new-recipe.input';
 // import { RecipesArgs } from './dto/recipes.args';
 import { Crypto } from './crypto.model';
@@ -23,8 +30,11 @@ export class CryptoResolver {
     return this.cryptoService.getLastPrice(dbNumber);
   }
 
-  //   @Query()
-  //   createCronJob(@Args('minutes') minutes: number ){
-
-  //   }
+  @Mutation((returns) => Boolean)
+  async createCronJob(
+    // @Args({ name: 'second', type: () => Int }) second: number,
+    @Args('second') second: number,
+  ) {
+    return this.cryptoService.createCronJob(second);
+  }
 }

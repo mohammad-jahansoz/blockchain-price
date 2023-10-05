@@ -28,9 +28,10 @@ export class CryptoService {
         },
         method: 'get',
       });
+
       return { ...data };
     } catch (error) {
-      throw new Error(error);
+      console.log(error);
     }
   }
 
@@ -58,7 +59,7 @@ export class CryptoService {
     return newPrice;
   }
 
-  async createCronJob(second: Number): Promise<void> {
+  async createCronJob(second: Number): Promise<boolean> {
     const jobs = this.schedulerRegistry.getCronJobs();
     jobs.forEach((value, key, map) => {
       this.schedulerRegistry.deleteCronJob(key);
@@ -71,6 +72,7 @@ export class CryptoService {
     });
     this.schedulerRegistry.addCronJob(second.toString(), job);
     job.start();
+    return true;
   }
 
   // @Cron('5 * * * * *')
