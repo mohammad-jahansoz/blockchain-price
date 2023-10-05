@@ -6,9 +6,14 @@ import { CoinType } from './interfaces/coin.interface';
 export class CryptoController {
   constructor(private readonly cryptoService: CryptoService) {}
 
+  // @Get()
+  // async getCoinData(): Promise<CoinType> {
+  //   // get price with params or body or query
+  //   return this.cryptoService.getPrice();
+  // }
+
   @Get()
-  async getCoinData(): Promise<CoinType> {
-    // get price with params or body or query
-    return this.cryptoService.getPrice('BTC');
+  async cronjob() {
+    this.cryptoService.createCronJob(2);
   }
 }

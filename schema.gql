@@ -2,7 +2,7 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-"""crypto """
+"""crypto"""
 type Crypto {
   time: String
   asset_id_base: String
@@ -11,5 +11,6 @@ type Crypto {
 }
 
 type Query {
-  recipe: Crypto!
+  crypto: Crypto!
+  lastPrice(dbNumber: Float!): Crypto!
 }

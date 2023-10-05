@@ -10,8 +10,7 @@ export class CryptoResolver {
   constructor(private readonly cryptoService: CryptoService) {}
 
   @Query((returns) => Crypto)
-  //   async recipe(@Args('id') id: string): Promise<Crypto> {
-  async recipe(): Promise<Crypto> {
+  async crypto(): Promise<Crypto> {
     const crypto = await this.cryptoService.getPrice();
     if (!crypto) {
       throw new NotFoundException();
@@ -19,8 +18,13 @@ export class CryptoResolver {
     return crypto;
   }
 
-  //   @Query(returns => [Crypto])
-  //   recipes(): Promise<Crypto[]> {
-  // return this.recipesService.findAll(recipesArgs);
+  @Query((returns) => Crypto)
+  lastPrice(@Args('dbNumber') dbNumber: number): Promise<Crypto> {
+    return this.cryptoService.getLastPrice(dbNumber);
+  }
+
+  //   @Query()
+  //   createCronJob(@Args('minutes') minutes: number ){
+
   //   }
 }

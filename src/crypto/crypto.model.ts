@@ -1,6 +1,6 @@
 import { Directive, Field, ID, ObjectType } from '@nestjs/graphql';
 
-@ObjectType({ description: 'crypto ' })
+@ObjectType({ description: 'crypto' })
 export class Crypto {
   @Field({ nullable: true })
   time: string;

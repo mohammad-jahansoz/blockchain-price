@@ -5,7 +5,8 @@ import { Crypto } from './crypto.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CryptoModule } from './crypto.module';
-import { Cron } from '@nestjs/schedule';
+import { Cron, SchedulerRegistry } from '@nestjs/schedule';
+import { CronJob } from 'cron';
 
 @Injectable()
 export class CryptoService {
@@ -14,12 +15,13 @@ export class CryptoService {
     private readonly cryptoModelDB1: Model<CryptoModule>,
     @InjectModel('CryptoModel', 'db2')
     private readonly cryptoModelDB2: Model<CryptoModule>,
+    private schedulerRegistry: SchedulerRegistry,
   ) {}
 
-  async getPrice(coinSymbol: string = 'BTC'): Promise<CoinType> {
+  async getPrice(): Promise<CoinType> {
     try {
       const { data } = await axios({
-        url: `https://rest.coinapi.io/v1/exchangerate/${coinSymbol}/USD`,
+        url: `https://rest.coinapi.io/v1/exchangerate/BTC/USD`,
         maxBodyLength: Infinity,
         headers: {
           'X-CoinAPI-Key': '3B8EC095-177B-476B-86D3-392ECD268277',
@@ -30,6 +32,18 @@ export class CryptoService {
     } catch (error) {
       throw new Error(error);
     }
+  }
+
+  async getLastPrice(dbNumber: number): Promise<CoinType> {
+    let price;
+    if (dbNumber == 1) {
+      price = await this.cryptoModelDB1.findOne();
+    } else if (dbNumber == 2) {
+      price = await this.cryptoModelDB2.findOne();
+    } else {
+      throw new Error('we havent any database with this number');
+    }
+    return price;
   }
 
   async saveData(coinData: CoinType): Promise<CoinType> {
@@ -44,10 +58,25 @@ export class CryptoService {
     return newPrice;
   }
 
-  @Cron('*/5 * * * * *')
-  async saveBtcPrice(): Promise<void> {
-    const coinData = await this.getPrice();
-    const result = await this.saveData(coinData);
-    console.log(result);
+  async createCronJob(second: Number): Promise<void> {
+    const jobs = this.schedulerRegistry.getCronJobs();
+    jobs.forEach((value, key, map) => {
+      this.schedulerRegistry.deleteCronJob(key);
+    });
+    const job = new CronJob(`*/${second} * * * * *`, async () => {
+      console.log(`get price of btc every ${second} second`);
+      const coinData = await this.getPrice();
+      const result = await this.saveData(coinData);
+      console.log(result);
+    });
+    this.schedulerRegistry.addCronJob(second.toString(), job);
+    job.start();
   }
+
+  // @Cron('5 * * * * *')
+  // async saveBtcPrice(): Promise<void> {
+  //   const coinData = await this.getPrice();
+  //   const result = await this.saveData(coinData);
+  //   console.log(result);
+  // }
 }
