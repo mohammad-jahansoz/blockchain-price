@@ -1,3 +1,4 @@
+nest js graphql mongoose multiple document cron job
 first should npm install
 
 query CryptoQuery{
@@ -10,3 +11,4 @@ rate
 mutation AddMutation($second :Float!){
   createCronJob(second:$second)
 }
+
